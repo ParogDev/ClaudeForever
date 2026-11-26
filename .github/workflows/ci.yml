@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tools:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pytest
+      - name: Python tool tests
+        run: python -I -m pytest tools/tsm/tests tools/foreverauras/tests tools/tests -q
+      - name: Game-file guard tests
+        shell: powershell
+        run: |
+          powershell -NoProfile -ExecutionPolicy Bypass -File tools\guard-game-files.tests.ps1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+  addon-template:
+    # Fills templates/addon the way /new-addon does and runs the same checks as tools\lua.ps1.
+    runs-on: ubuntu-24.04
+    env:
+      STYLUA_VERSION: 2.1.0
+      LUACHECK_VERSION: 1.2.0-1
+      BUSTED_VERSION: 2.3.0-1
+    steps:
+      - uses: actions/checkout@v4
+      - name: install Lua 5.1, luacheck, busted, stylua
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends lua5.1 liblua5.1-0-dev luarocks
+          sudo luarocks --lua-version 5.1 install luacheck "$LUACHECK_VERSION"
+          sudo luarocks --lua-version 5.1 install busted "$BUSTED_VERSION"
+          curl -fsSL -o /tmp/stylua.zip "https://github.com/JohnnyMorganz/StyLua/releases/download/v${STYLUA_VERSION}/stylua-linux-x86_64.zip"
+          sudo unzip -q /tmp/stylua.zip -d /usr/local/bin && sudo chmod +x /usr/local/bin/stylua
+      - name: fill the template as AddOns/TestAddon
+        run: |
+          cp -r templates/addon AddOns/TestAddon
+          cd AddOns/TestAddon
+          mv __NAME__.toc TestAddon.toc
+          grep -rl '__[A-Z]*__' . | xargs sed -i -e 's/__NAME__/TestAddon/g' -e 's/__LOWER__/testaddon/g' \
+            -e 's/__UPPER__/TESTADDON/g' -e 's/__NOTES__/Template check/g' -e 's/__AUTHOR__/CI/g' -e 's/__YEAR__/2026/g'
+          if grep -rn '__[A-Z]*__' .; then echo "placeholder left in the template"; exit 1; fi
+      - name: luacheck
+        working-directory: AddOns/TestAddon
+        run: luacheck . --no-color
+      - name: busted
+        working-directory: AddOns/TestAddon
+        run: busted --verbose
+      - name: stylua
+        working-directory: AddOns/TestAddon
+        run: stylua --check .

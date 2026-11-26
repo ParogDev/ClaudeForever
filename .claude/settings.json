@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:warcraft.wiki.gg)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "PowerShell(powershell -NoProfile -ExecutionPolicy Bypass -File tools\\lua.ps1 *)",
+      "PowerShell(powershell -NoProfile -ExecutionPolicy Bypass -File tools\\link-addons.ps1 *)",
+      "PowerShell(powershell -NoProfile -ExecutionPolicy Bypass -File tools\\reload-wait.ps1 *)",
+      "PowerShell(powershell -NoProfile -ExecutionPolicy Bypass -File tools\\vendor-sync.ps1 *)"
+    ],
+    "deny": [
+      "Bash(git push --force *)",
+      "Bash(git push -f *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit|Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"$CLAUDE_PROJECT_DIR/tools/guard-game-files.ps1\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

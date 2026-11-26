@@ -1,0 +1,43 @@
+# Lint, test and format-check on every push and pull request. Same tools and pins as the workspace's
+# tools/containers/lua51/Dockerfile, so a green tools\lua.ps1 run locally means a green run here.
+name: ci
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  STYLUA_VERSION: 2.1.0
+  LUACHECK_VERSION: 1.2.0-1
+  BUSTED_VERSION: 2.3.0-1
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: install Lua 5.1, luacheck, busted, stylua
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends lua5.1 liblua5.1-0-dev luarocks
+          sudo luarocks --lua-version 5.1 install luacheck "$LUACHECK_VERSION"
+          sudo luarocks --lua-version 5.1 install busted "$BUSTED_VERSION"
+          curl -fsSL -o /tmp/stylua.zip "https://github.com/JohnnyMorganz/StyLua/releases/download/v${STYLUA_VERSION}/stylua-linux-x86_64.zip"
+          sudo unzip -q /tmp/stylua.zip -d /usr/local/bin && sudo chmod +x /usr/local/bin/stylua
+      - name: luacheck
+        run: luacheck . --no-color
+      - name: busted
+        run: busted --verbose
+      - name: stylua
+        run: stylua --check .

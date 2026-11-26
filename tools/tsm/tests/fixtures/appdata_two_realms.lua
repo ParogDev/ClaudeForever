@@ -1,0 +1,4 @@
+select(2, ...).LoadData("AUCTIONDB_NON_COMMODITY_DATA","Test-Horde",[[return {downloadTime=1700043600,fields={"itemString","minBuyout","numAuctions","marketValueRecent"},data={{1001,12C,V,12C}}}]]) --<AUCTIONDB_NON_COMMODITY_DATA,Test-Horde,1700043600,999>
+select(2, ...).LoadData("AUCTIONDB_NON_COMMODITY_DATA","Test-Alliance",[[return {downloadTime=1700043600,fields={"itemString","minBuyout","numAuctions","marketValueRecent"},data={{1001,34,2,34}}}]]) --<AUCTIONDB_NON_COMMODITY_DATA,Test-Alliance,1700043600,998>
+select(2, ...).LoadData("AUCTIONDB_REGION_STAT","Test-US",[[return {downloadTime=1699990000,fields={"itemString","regionMarketValue"},data={{1001,1QN}}}]]) --<AUCTIONDB_REGION_STAT,Test-US,1699990000>
+select(2, ...).LoadData("APP_INFO","Global",[[return {version="9.9.9",lastSync=1700044000,message={id=0,msg=""},news={}}]]) --<APP_INFO,Global,1700044000>

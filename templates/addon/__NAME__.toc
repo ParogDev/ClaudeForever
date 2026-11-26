@@ -1,0 +1,11 @@
+## Interface: 16001
+## Title: __NAME__
+## Notes: __NOTES__
+## Author: __AUTHOR__
+## Version: @project-version@
+## SavedVariables: __NAME__DB
+## X-Game: forever
+## X-License: MIT
+## IconTexture: Interface\Icons\INV_Misc_QuestionMark
+
+Core.lua

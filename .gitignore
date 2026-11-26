@@ -1,0 +1,23 @@
+# Your addons: each AddOns/<Name>/ is its own git repo (and maybe its own GitHub repo), not part of this one.
+AddOns/*/
+!AddOns/README.md
+
+# Read-only references fetched by tools/vendor-sync.ps1
+vendor/
+
+# Your own notes and scratch work
+research/
+
+# TSM: your plan, your setup notes and backups of your SavedVariables stay on your PC
+tsm/plan.json
+tsm/my-setup.md
+tsm/backups/
+
+# Python and tool caches
+__pycache__/
+.pytest_cache/
+*.pyc
+.luacheckcache
+
+# Local Claude Code settings (permissions you granted on this PC)
+.claude/settings.local.json

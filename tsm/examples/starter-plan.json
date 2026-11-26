@@ -1,0 +1,108 @@
+{
+  "profile": "Default",
+  "operations": [
+    {
+      "module": "Auctioning",
+      "name": "Starter-Mats-12h",
+      "settings": {
+        "minPrice": "max(120% vendorsell, 60% min(dbmarket, dbregionmarketavg))",
+        "normalPrice": "max(200% vendorsell, 110% first(dbmarket, dbregionmarketavg))",
+        "maxPrice": "max(400% vendorsell, 200% max(dbmarket, dbregionmarketavg))",
+        "undercut": "1c",
+        "duration": 1,
+        "postCap": "20",
+        "keepQuantity": "0",
+        "maxExpires": "0",
+        "priceReset": "none",
+        "aboveMax": "maxPrice",
+        "cancelUndercut": true,
+        "cancelRepost": false,
+        "cancelRepostThreshold": "50s",
+        "bidPercent": 1,
+        "ignoreLowDuration": 0
+      }
+    },
+    {
+      "module": "Auctioning",
+      "name": "Starter-BoE-24h",
+      "settings": {
+        "minPrice": "max(150% vendorsell, 70% first(dbmarket, dbmarket(baseitem), dbregionmarketavg))",
+        "normalPrice": "max(200% vendorsell, 120% first(dbmarket, dbmarket(baseitem), dbregionmarketavg))",
+        "maxPrice": "max(400% vendorsell, 300% max(first(dbmarket, dbmarket(baseitem)), dbregionmarketavg))",
+        "undercut": "1c",
+        "duration": 2,
+        "postCap": "1",
+        "keepQuantity": "0",
+        "maxExpires": "3",
+        "priceReset": "none",
+        "aboveMax": "normalPrice",
+        "cancelUndercut": true,
+        "cancelRepost": false,
+        "cancelRepostThreshold": "1g",
+        "bidPercent": 1,
+        "ignoreLowDuration": 0
+      }
+    },
+    {
+      "module": "Auctioning",
+      "name": "Starter-Goods-24h",
+      "settings": {
+        "minPrice": "max(120% vendorsell, 60% min(dbmarket, dbregionmarketavg))",
+        "normalPrice": "max(200% vendorsell, 110% first(dbmarket, dbregionmarketavg))",
+        "maxPrice": "max(400% vendorsell, 200% max(dbmarket, dbregionmarketavg))",
+        "undercut": "1c",
+        "duration": 2,
+        "postCap": "10",
+        "keepQuantity": "0",
+        "maxExpires": "0",
+        "priceReset": "none",
+        "aboveMax": "maxPrice",
+        "cancelUndercut": true,
+        "cancelRepost": false,
+        "cancelRepostThreshold": "50s",
+        "bidPercent": 1,
+        "ignoreLowDuration": 0
+      }
+    },
+    {
+      "module": "Vendoring",
+      "name": "Starter-Vendor-Trash",
+      "settings": {
+        "enableBuy": false,
+        "enableSell": true,
+        "sellAfterExpired": "0",
+        "keepQty": "0",
+        "sellSoulbound": false,
+        "vsMarketValue": "dbmarket",
+        "vsMaxMarketValue": "max(150% vendorsell, 1s)",
+        "vsDestroyValue": "dbmarket",
+        "vsMaxDestroyValue": "0c"
+      }
+    }
+  ],
+  "groups": [
+    "Crafting mats",
+    "Gear BoE",
+    "Consumables",
+    "Vendor trash",
+    "Keep (never post)"
+  ],
+  "group_operations": [
+    {"group": "Crafting mats", "module": "Auctioning", "operations": ["Starter-Mats-12h"], "override": true},
+    {"group": "Crafting mats", "module": "Vendoring", "operations": [], "override": true},
+    {"group": "Gear BoE", "module": "Auctioning", "operations": ["Starter-BoE-24h"], "override": true},
+    {"group": "Gear BoE", "module": "Vendoring", "operations": [], "override": true},
+    {"group": "Consumables", "module": "Auctioning", "operations": ["Starter-Goods-24h"], "override": true},
+    {"group": "Consumables", "module": "Vendoring", "operations": [], "override": true},
+    {"group": "Vendor trash", "module": "Auctioning", "operations": [], "override": true},
+    {"group": "Vendor trash", "module": "Vendoring", "operations": ["Starter-Vendor-Trash"], "override": true},
+    {"group": "Keep (never post)", "module": "Auctioning", "operations": [], "override": true},
+    {"group": "Keep (never post)", "module": "Shopping", "operations": [], "override": true},
+    {"group": "Keep (never post)", "module": "Sniper", "operations": [], "override": true},
+    {"group": "Keep (never post)", "module": "Crafting", "operations": [], "override": true},
+    {"group": "Keep (never post)", "module": "Mailing", "operations": [], "override": true},
+    {"group": "Keep (never post)", "module": "Vendoring", "operations": [], "override": true},
+    {"group": "Keep (never post)", "module": "Warehousing", "operations": [], "override": true}
+  ],
+  "items": {}
+}

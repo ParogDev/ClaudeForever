@@ -1,0 +1,1 @@
+select(2, ...).LoadData("AUCTIONDB_REGION_STAT","Test-US",[[return {downloadTime=1699990000,fields={"itemString","regionMarketValue"},data={{1001,1QN},{1002,A}}}]]) --<AUCTIONDB_REGION_STAT,Test-US,1699990000>
